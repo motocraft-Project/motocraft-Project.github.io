@@ -1,0 +1,588 @@
+Build a complete, production-ready, multi-user dealership management web application named Drixon Motors.
+The application must replicate the structure, functionality, navigation, user experience, and workflows of a comprehensive automotive dealership management system.
+This is not a landing page, prototype, mockup, or dashboard-only project.
+Build the complete frontend, backend, database, authentication system, business logic, financial calculations, PDF document generation, reporting, and deployment-ready application.
+All modules must be interconnected and fully operational.
+Company name: Drixon Motors
+Use this name throughout the entire application, including the login page, sidebar, dashboard, reports, invoices, documents, settings, and notifications.
+Create a professional dealership management dashboard with:
+- Dark navy vertical sidebar
+- White or light-gray main workspace
+- Blue accent buttons
+- Modern cards and tables
+- Collapsible navigation
+- Responsive desktop and mobile layouts
+- Professional icons
+- Search and filtering
+- Modal forms
+- Toast notifications
+- Confirmation dialogs
+- Loading and empty states
+- User profile menu
+- Notification center
+- Dark and light themes
+Overview
+- Dashboard
+Vehicle Management
+- Inventory
+- Acquisitions
+- Auctions
+- Transportation
+- Repairs
+- Parts
+Business Management
+- Customers
+- Leads
+- Sales
+- Invoices
+- Payments
+Financial Management
+- Expenses
+- Accounts Payable
+- Accounts Receivable
+- Profit & Loss
+- Reports
+Administration
+- Mechanics
+- Vendors
+- Documents
+- Activity Logs
+- Users & Roles
+- Settings
+Every sidebar item must open a functional page.
+Build a secure multi-user application where multiple employees can log in simultaneously and access the same dealership database.
+- Email and password login
+- Forgot password
+- Reset password
+- Invite employees
+- Activate or deactivate users
+- Secure sessions
+- Logout
+- Password change
+- Profile management
+Administrator
+- Complete application access
+- Add and remove employees
+- View all financial data
+- Manage permissions
+- Edit company settings
+- Approve sensitive transactions
+Manager
+- Manage inventory
+- Manage purchases and repairs
+- Manage sales and customers
+- View authorized financial reports
+- Supervise employee activities
+Employee
+- View authorized inventory
+- Add and update assigned records
+- Manage customers and leads
+- Create permitted sales transactions
+- Access only approved modules
+Create a configurable permission matrix for View, Create, Edit, Delete, Export, Approve, and Manage.
+Enforce permissions on the backend, not only by hiding interface elements.
+Create a real-time dealership dashboard.
+- Total vehicles
+- Available vehicles
+- Vehicles under repair
+- Vehicles in transit
+- Vehicles sold
+- Total inventory investment
+- Total purchase expenses
+- Total repair expenses
+- Total sales revenue
+- Gross profit
+- Net profit
+- Outstanding customer balances
+- Outstanding mechanic payments
+- Monthly sales
+- Monthly revenue
+- Monthly profit
+- Expense breakdown
+- Vehicle inventory by status
+- Salesperson performance
+- Recently added vehicles
+- Recent sales
+- Pending repairs
+- Outstanding payments
+- Recent activities
+- Inventory aging
+- Notifications
+All numbers must come from actual database transactions.
+Build a complete vehicle inventory system.
+- Stock number
+- VIN
+- Year
+- Make
+- Model
+- Trim
+- Mileage
+- Exterior color
+- Interior color
+- Body type
+- Engine
+- Transmission
+- Drivetrain
+- Fuel type
+- Title status
+- Number of keys
+- Purchase date
+- Purchase source
+- Purchase price
+- Auction fees
+- Transportation costs
+- Repair costs
+- Total investment
+- Asking price
+- Minimum selling price
+- Sold price
+- Vehicle status
+- Vehicle description
+- Notes
+- Multiple photos
+- Purchased
+- Awaiting pickup
+- In transit
+- Received
+- Inspection pending
+- Under repair
+- Ready for sale
+- Listed
+- Reserved
+- Sold
+- Delivered
+- Wholesale
+- Archived
+- Add vehicle
+- Edit vehicle
+- View details
+- Upload photos
+- Search by VIN
+- Search by stock number
+- Filter by make, model, year, price, and status
+- Sort columns
+- Export inventory
+- View repair history
+- View purchase expenses
+- View sales information
+- View profit calculation
+Create a detailed vehicle profile with tabs for Overview, Acquisition, Repairs, Expenses, Documents, Sales, and Profit.
+Track every auction purchase.
+- Auction company
+- Auction location
+- Auction date
+- Lot number
+- Vehicle
+- Winning bid
+- Buyer fee
+- Online fee
+- Documentation fee
+- Storage fee
+- Transportation fee
+- Other charges
+- Total acquisition cost
+- Payment status
+- Pickup status
+- Arrival date
+Automatically calculate the total acquisition cost and link it to vehicle inventory.
+Prevent duplicate posting of auction expenses.
+Track vehicle movement from auction or seller to dealership.
+Fields:
+- Vehicle
+- Pickup location
+- Delivery location
+- Transport company
+- Driver
+- Pickup date
+- Expected delivery
+- Actual delivery
+- Transportation cost
+- Payment status
+- Delivery status
+- Notes
+Transportation expenses must automatically contribute to vehicle acquisition cost.
+Create a comprehensive repair management system.
+- Repair order number
+- Vehicle
+- Mechanic
+- Vendor
+- Repair date
+- Repair description
+- Parts cost
+- Labor cost
+- Diagnostic charges
+- Additional costs
+- Total repair amount
+- Amount paid
+- Balance remaining
+- Repair status
+- Payment status
+- Receipt attachment
+- Notes
+- Pending
+- In progress
+- Waiting for parts
+- Completed
+- Cancelled
+- Multiple repairs per vehicle
+- Multiple parts per repair
+- Multiple mechanics
+- Partial payments
+- Repair history
+- Mechanic balances
+- Repair invoice generation
+- Cost integration with vehicle profitability
+All payment allocations must be recorded separately.
+Create individual mechanic accounts and profiles.
+Track:
+- Mechanic name
+- Business name
+- Phone
+- Email
+- Assigned vehicles
+- Completed jobs
+- Total charges
+- Total payments
+- Outstanding balance
+- Payment history
+Support one payment being allocated across multiple repair invoices.
+Display a mechanic ledger showing every charge, payment, adjustment, and remaining balance.
+Manage auction vendors, parts suppliers, transportation companies, and repair shops.
+Each vendor must have:
+- Contact information
+- Vendor category
+- Associated vehicles
+- Purchase history
+- Invoice history
+- Total payable
+- Total paid
+- Outstanding balance
+- Transaction statement
+Support vendor payments, refunds, and adjustments.
+Create a complete customer relationship management system.
+- Customer ID
+- First name
+- Last name
+- Phone
+- Email
+- Address
+- Assigned salesperson
+- Customer status
+- Notes
+- Purchase history
+- Follow-up date
+- Add customer
+- Edit customer
+- Search customers
+- Assign salesperson
+- Track customer inquiries
+- Record follow-up activities
+- View invoices
+- View payment history
+- View purchased vehicles
+Create lead statuses: New, Contacted, Interested, Negotiating, Appointment, Converted, Lost.
+Build a complete vehicle sales workflow.
+- Sale number
+- Vehicle
+- Customer
+- Salesperson
+- Sale date
+- Selling price
+- Discount
+- Trade-in allowance
+- Deposit
+- Applicable taxes
+- Title fees
+- Registration fees
+- Dealer fees
+- Other charges
+- Total amount due
+- Amount received
+- Outstanding balance
+- Payment method
+- Sale status
+- Delivery status
+1. Select available vehicle.
+2. Select customer.
+3. Enter selling price.
+4. Add applicable taxes and fees.
+5. Record deposit.
+6. Calculate balance.
+7. Generate invoice.
+8. Record payments.
+9. Finalize sale.
+10. Automatically update inventory.
+11. Update customer history.
+12. Update financial reports.
+Prevent duplicate vehicle sales.
+Support cancellations, returns, and refunds with an auditable transaction history.
+Generate professional Drixon Motors PDF documents.
+Required:
+- Vehicle sales invoice
+- Bill of sale
+- Purchase agreement
+- Deposit receipt
+- Payment receipt
+- Repair invoice
+- Mechanic payment receipt
+- Vendor payment receipt
+- Vehicle expense statement
+- Vehicle profit report
+Each document should include:
+- Drixon Motors branding
+- Configured dealership information
+- Unique document number
+- Transaction date
+- Customer or vendor details
+- Vehicle details
+- Itemized charges
+- Total
+- Payment status
+- Signature fields when applicable
+Support PDF download, printing, and document history.
+Do not assume generic legal forms satisfy every state's dealership requirements.
+Create a centralized expense management system.
+- Vehicle purchases
+- Auction fees
+- Transportation
+- Towing
+- Repairs
+- Parts
+- Mechanic labor
+- Rent
+- Utilities
+- Insurance
+- Advertising
+- Licensing
+- Office expenses
+- Software
+- Miscellaneous
+- Add expense
+- Edit expense
+- Attach receipt
+- Associate expense with vehicle
+- Associate expense with vendor
+- Track paid and unpaid amounts
+- Partial payments
+- Expense filtering
+- Monthly expense reporting
+Separate direct vehicle expenses from general dealership operating expenses.
+Create two separate financial modules.
+Track money Drixon Motors owes to:
+- Mechanics
+- Vendors
+- Auction companies
+- Transport companies
+- Other suppliers
+Track money owed to Drixon Motors by:
+- Customers
+- Other businesses
+- Other authorized counterparties
+Both modules must support:
+- Partial payments
+- Payment history
+- Outstanding balances
+- Due dates
+- Transaction statements
+- Adjustments
+- Refunds
+Never treat an unpaid expense as a completed cash payment.
+Implement automatic vehicle-level and dealership-level profitability.
+Purchase price + Auction fees + Transportation + Other acquisition costs.
+Parts + Labor + Diagnostics + Other repair costs.
+Acquisition cost + Reconditioning cost.
+Net vehicle sales revenue − Vehicle cost of goods sold.
+Gross profit − Direct selling expenses not already included in vehicle cost.
+Gross profit − Operating expenses + Other operating income − Other applicable expenses.
+Use consistent accounting rules for taxes, trade-ins, refunds, inventory, and deposits.
+- Profit by vehicle
+- Profit by month
+- Profit by salesperson
+- Profit by make and model
+- Gross profit
+- Net profit
+- Total investment
+- Unsold inventory value
+Never double-count deposits, expenses, or payments.
+Build comprehensive reports.
+Required reports:
+- Inventory report
+- Inventory aging
+- Auction purchases
+- Acquisition expenses
+- Repair expenses
+- Mechanic payments
+- Vendor balances
+- Customer balances
+- Sales report
+- Salesperson performance
+- Vehicle profit
+- Monthly profit and loss
+- Cash flow
+- Accounts payable
+- Accounts receivable
+- Employee activity
+Provide date filters, vehicle filters, user filters, and status filters.
+Allow PDF, Excel, and CSV exports.
+Create an in-app notification center.
+Notify authorized users when:
+- A vehicle is added
+- A vehicle is received
+- A repair is completed
+- A payment becomes due
+- A vehicle is sold
+- A customer follow-up is due
+- An invoice is created
+- A payment is received
+- A user is invited
+- A permission is changed
+Support read and unread notifications.
+Implement global search across authorized dealership records.
+Search by:
+- VIN
+- Stock number
+- Vehicle make and model
+- Customer name
+- Customer phone
+- Mechanic name
+- Vendor name
+- Invoice number
+- Sale number
+- Auction lot number
+Use PostgreSQL with a secure cloud backend.
+Create normalized tables for:
+- Organizations
+- Users
+- Roles
+- Permissions
+- Vehicles
+- Acquisitions
+- Auctions
+- Transportation
+- Repairs
+- Repair items
+- Mechanics
+- Vendors
+- Customers
+- Leads
+- Sales
+- Invoices
+- Payments
+- Expenses
+- Receivables
+- Payables
+- Financial entries
+- Documents
+- Notifications
+- Audit logs
+- Company settings
+Use UUID primary keys, proper foreign keys, indexes, database constraints, and transaction-safe operations.
+Include organization-level data isolation for future multi-dealership expansion.
+Use exact decimal monetary types.
+Do not use localStorage as permanent business storage.
+Use a modern production-ready stack:
+Frontend
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- React Hook Form
+- Zod
+- TanStack Table
+- Recharts
+Backend
+- Server-side API routes
+- PostgreSQL
+- Supabase or equivalent authentication and storage
+- Secure authorization middleware
+- Database transactions
+Additional
+- PDF generation
+- Excel export
+- Cloud file storage
+- Error monitoring
+- Automated testing
+- Database backups
+Implement:
+- Secure authentication
+- Backend role authorization
+- Organization isolation
+- Protected file storage
+- Server-side validation
+- Rate limiting
+- Secure session handling
+- Activity logging
+- Backup and recovery
+Log important activities, including vehicle edits, sales, payments, expense adjustments, user changes, and deletions.
+Do not permanently erase financial transaction history when correcting a transaction. Use auditable reversals and adjustments.
+Every button must work.
+Every form must save to the database.
+Every table must display real records.
+Every calculation must use actual transactions.
+Every search must return relevant authorized records.
+Every PDF export must generate a valid document.
+Every user permission must be enforced.
+Every related module must remain synchronized.
+Do not use fake financial values, placeholder buttons, or static sample records as production functionality.
+Include loading states, validation errors, success messages, confirmation dialogs, and empty states.
+Create three users: Administrator, Manager, Employee.
+Verify independent logins and permissions.
+Purchase price: $9,000
+Auction fees: $700
+Transportation: $300
+Expected acquisition cost: $10,000.
+Parts: $500
+Labor: $400
+Expected total vehicle cost: $10,900.
+Labor invoice: $400
+Payment: $250
+Expected remaining payable: $150.
+Selling price: $13,500.
+Assuming no additional selling expenses or adjustments:
+Expected gross profit: $2,600.
+Update inventory from one user account and verify the update appears for another authorized user.
+Log out and log in again.
+Verify all records remain saved.
+Verify there are no duplicate expenses, deposits, sales, or payments.
+Verify unauthorized users cannot access restricted financial records or API endpoints.
+Generate and verify invoices, receipts, and reports.
+Build in this sequence:
+Phase 1: Database, authentication, roles, and permissions.
+Phase 2: Application layout, sidebar, dashboard, and settings.
+Phase 3: Vehicle inventory, acquisitions, and auctions.
+Phase 4: Transportation, repairs, mechanics, and vendors.
+Phase 5: Customers, leads, sales, and invoices.
+Phase 6: Payments, expenses, receivables, and payables.
+Phase 7: Profit and loss, reports, and exports.
+Phase 8: Notifications, audit logs, and advanced search.
+Phase 9: End-to-end testing, security verification, and financial reconciliation.
+Phase 10: Production deployment and documentation.
+Keep a persistent implementation checklist and report completed, pending, and blocked features.
+Do not silently skip modules.
+Deliver:
+- Complete working application
+- Full frontend source code
+- Full backend source code
+- Database schema
+- Database migrations
+- Multi-user authentication
+- Role-based permissions
+- All dealership modules
+- Financial calculations
+- PDF generation
+- Reporting
+- File storage
+- Audit logs
+- Automated tests
+- Environment configuration
+- Deployment instructions
+- Secure initial administrator setup
+The application must be fully usable across multiple devices and employee accounts.
+Build Drixon Motors as a complete, professional, production-ready automotive dealership management system.
+Implement every module described above, including all database relationships, user permissions, operational workflows, financial calculations, reporting features, and document generation.
+Do not create only the visual interface.
+Do not stop after creating the dashboard.
+Do not substitute mock data for functional business logic.
+Complete the application in phases, test each phase, and preserve development progress until all requirements are implemented.
+The final result must be a working dealership operating system suitable for managing real vehicle inventory, purchases, repairs, mechanics, customers, sales, payments, and profitability across multiple employee accounts.
