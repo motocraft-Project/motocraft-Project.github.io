@@ -29,6 +29,7 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          NEXT_PUBLIC_AI_API_URL: https://motocraft-ai-api.vercel.app
           NEXT_TELEMETRY_DISABLED: '1'
       - run: npm run typecheck
       - name: Disable Jekyll processing

@@ -14,7 +14,7 @@ export default {
       if (!parsed.success) return json(request, { error: parsed.error.issues[0]?.message || 'Invalid analysis request.' }, 400);
       const { vehicle, documentText, evidenceNames, images } = parsed.data;
       const vinDecode = await decodeVin(vehicle.vin, vehicle.year);
-      const model = images.length ? (process.env.GROQ_VISION_MODEL || 'qwen/qwen3.6-27b') : (process.env.GROQ_TEXT_MODEL || 'openai/gpt-oss-20b');
+      const model = images.length ? (process.env.GROQ_VISION_MODEL || 'qwen/qwen3.8-27b') : (process.env.GROQ_TEXT_MODEL || 'openai/gpt-oss-20b');
       const evidence = JSON.stringify({ vehicle, nhtsaVinSpecifications: vinDecode, evidenceNames, extractedDocumentText: documentText }, null, 2);
       const content: any[] = [{ type: 'text', text: `Analyze this proposed acquisition.\n${evidence}` }, ...images.map(image => ({ type: 'image_url', image_url: { url: image } }))];
       const completion = await groqChat({ model, messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content }], response_format: { type: 'json_object' }, temperature: 0.1, max_completion_tokens: 2600 });

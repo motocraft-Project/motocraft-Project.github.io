@@ -13,10 +13,12 @@ export default {
       const bytes = Buffer.from(match[2], 'base64');
       if (bytes.length > 12_000_000) return json(request, { error: 'Recording is too large. Keep it under two minutes.' }, 413);
       const key = process.env.GROQ_API_KEY; if (!key) return json(request, { error: 'GROQ_API_KEY is not configured.' }, 503);
+      const mimeType = body.mimeType || `audio/${match[1]}`;
+      const extension = mimeType.includes('wav') ? 'wav' : mimeType.includes('mpeg') || mimeType.includes('mp3') ? 'mp3' : mimeType.includes('mp4') || mimeType.includes('m4a') ? 'm4a' : 'webm';
       const form = new FormData();
       form.set('model', 'whisper-large-v3-turbo'); form.set('response_format', 'json'); form.set('language', 'en');
       form.set('prompt', 'Vehicle acquisition details including VIN, mileage, title, maintenance, damage, repair needs and price.');
-      form.set('file', new Blob([bytes], { type: body.mimeType || 'audio/webm' }), 'vehicle-details.webm');
+      form.set('file', new Blob([bytes], { type: mimeType }), `vehicle-details.${extension}`);
       const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', { method: 'POST', headers: { Authorization: `Bearer ${key}` }, body: form, signal: AbortSignal.timeout(55_000) });
       const data = await response.json() as any;
       if (!response.ok) throw new Error(data?.error?.message || `Transcription failed (${response.status}).`);

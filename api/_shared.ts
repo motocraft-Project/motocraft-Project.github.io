@@ -50,7 +50,7 @@ export const analysisRequestSchema = z.object({
   vehicle: vehicleSchema,
   documentText: z.string().max(45_000).default(''),
   evidenceNames: z.array(z.string().max(180)).max(8).default([]),
-  images: z.array(z.string().refine(v => /^data:image\/(jpeg|png|webp);base64,/i.test(v), 'Unsupported image')).max(5).default([])
+  images: z.array(z.string().refine(v => /^data:image\/(jpeg|png|webp);base64,/i.test(v), 'Unsupported image')).max(3).default([])
 }).superRefine((value, ctx) => {
   if (!value.vehicle.vin && !value.vehicle.make && !value.vehicle.model && !value.documentText && !value.images.length) {
     ctx.addIssue({ code: 'custom', message: 'Provide vehicle details or evidence.' });
