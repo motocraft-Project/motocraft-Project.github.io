@@ -2,6 +2,7 @@
   "name": "motocraft-demo",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "dev:api": "tsx --env-file=.env.local scripts/local-ai-server.ts",
