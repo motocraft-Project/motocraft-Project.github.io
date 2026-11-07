@@ -1,5 +1,4 @@
 import { authorize, cors, json, rateLimit } from './_shared';
-import { runWebHandler, type VercelRequestLike, type VercelResponseLike } from '../server/vercel-adapter';
 
 export async function handleTranscribe(request: Request) {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(request) });
@@ -26,6 +25,4 @@ export async function handleTranscribe(request: Request) {
     } catch (error) { return json(request, { error: error instanceof Error ? error.message : 'Transcription failed.' }, 502); }
 }
 
-export default function transcribe(request: VercelRequestLike, response: VercelResponseLike) {
-  return runWebHandler(request, response, handleTranscribe);
-}
+export default { fetch: handleTranscribe };
