@@ -1,13 +1,16 @@
 import { createServer, type IncomingMessage } from 'node:http';
-import analyze from '../api/analyze';
-import health from '../api/health';
-import transcribe from '../api/transcribe';
+import * as analyze from '../api/analyze';
+import * as health from '../api/health';
+import * as transcribe from '../api/transcribe';
 
 const host = '127.0.0.1';
 const port = Number(process.env.MOTOCRAFT_LOCAL_API_PORT || 8787);
 const maxBodyBytes = 25 * 1024 * 1024;
 
-const routes = new Map([
+type RouteHandler = (request: Request) => Response | Promise<Response>;
+type RouteModule = Record<string, RouteHandler | unknown>;
+
+const routes = new Map<string, RouteModule>([
   ['/api/analyze', analyze],
   ['/api/health', health],
   ['/api/transcribe', transcribe],
@@ -30,7 +33,7 @@ async function readBody(request: IncomingMessage) {
 createServer(async (incoming, outgoing) => {
   try {
     const url = new URL(incoming.url || '/', `http://${host}:${port}`);
-    const route = routes.get(url.pathname);
+    const route = routes.get(url.pathname) as RouteModule | undefined;
 
     if (!route) {
       outgoing.writeHead(404, { 'Content-Type': 'application/json' });
@@ -51,7 +54,14 @@ createServer(async (incoming, outgoing) => {
       init.duplex = 'half';
     }
 
-    const response = await route.fetch(new Request(url, init));
+    const handler = route[method] as RouteHandler | undefined;
+    if (typeof handler !== 'function') {
+      outgoing.writeHead(405, { 'Content-Type': 'application/json' });
+      outgoing.end(JSON.stringify({ error: 'Method not allowed.' }));
+      return;
+    }
+
+    const response = await handler(new Request(url, init));
     outgoing.statusCode = response.status;
     response.headers.forEach((value, name) => outgoing.setHeader(name, value));
     outgoing.end(Buffer.from(await response.arrayBuffer()));

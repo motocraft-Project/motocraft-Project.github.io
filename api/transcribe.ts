@@ -1,9 +1,10 @@
 import { authorize, cors, json, rateLimit } from './_shared';
 
-export default {
-  async fetch(request: Request) {
-    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(request) });
-    if (request.method !== 'POST') return json(request, { error: 'Method not allowed.' }, 405);
+export function OPTIONS(request: Request) {
+  return new Response(null, { status: 204, headers: cors(request) });
+}
+
+export async function POST(request: Request) {
     if (!authorize(request)) return json(request, { error: 'Invalid or missing MOTOCRAFT AI access code.' }, 401);
     if (rateLimit(request, 20)) return json(request, { error: 'Too many requests. Wait a minute and try again.' }, 429);
     try {
@@ -24,5 +25,4 @@ export default {
       if (!response.ok) throw new Error(data?.error?.message || `Transcription failed (${response.status}).`);
       return json(request, { text: data.text || '', model: 'whisper-large-v3-turbo' });
     } catch (error) { return json(request, { error: error instanceof Error ? error.message : 'Transcription failed.' }, 502); }
-  }
-};
+}
