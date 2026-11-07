@@ -1,5 +1,3 @@
-import { runWebHandler, type VercelRequestLike, type VercelResponseLike } from '../server/vercel-adapter';
-
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'https://motocraft-project.github.io,http://127.0.0.1:3000,http://localhost:3000')
   .split(',').map(value => value.trim()).filter(Boolean);
 
@@ -21,9 +19,44 @@ export function handleHealth(request: Request) {
   return new Response(JSON.stringify({
     ok: true,
     groqConfigured: Boolean(process.env.GROQ_API_KEY),
-    service: 'MOTOCRAFT AI'
+    service: 'MOTOCRAFT AI',
+    version: '2026-11-06-node-handler'
   }), { status: 200, headers: headers(request) });
 }
-export default function health(request: VercelRequestLike, response: VercelResponseLike) {
-  return runWebHandler(request, response, handleHealth);
+
+type NodeRequest = { method?: string; headers: Record<string, string | string[] | undefined> };
+type NodeResponse = {
+  statusCode: number;
+  setHeader(name: string, value: string): void;
+  end(body?: string): void;
+};
+
+export default function health(request: NodeRequest, response: NodeResponse) {
+  const requestedOrigin = typeof request.headers.origin === 'string' ? request.headers.origin : '';
+  const origin = allowedOrigins.includes(requestedOrigin) ? requestedOrigin : allowedOrigins[0];
+  response.setHeader('Access-Control-Allow-Origin', origin);
+  response.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
+  response.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-Motocraft-Access-Code');
+  response.setHeader('Cache-Control', 'no-store');
+  response.setHeader('Content-Type', 'application/json; charset=utf-8');
+  response.setHeader('Vary', 'Origin');
+
+  if (request.method === 'OPTIONS') {
+    response.statusCode = 204;
+    response.end();
+    return;
+  }
+  if (request.method !== 'GET') {
+    response.statusCode = 405;
+    response.end(JSON.stringify({ error: 'Method not allowed.' }));
+    return;
+  }
+
+  response.statusCode = 200;
+  response.end(JSON.stringify({
+    ok: true,
+    groqConfigured: Boolean(process.env.GROQ_API_KEY),
+    service: 'MOTOCRAFT AI',
+    version: '2026-11-06-node-handler'
+  }));
 }
