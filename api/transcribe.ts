@@ -1,10 +1,9 @@
 import { authorize, cors, json, rateLimit } from './_shared';
+import { runWebHandler, type VercelRequestLike, type VercelResponseLike } from '../server/vercel-adapter';
 
-export function OPTIONS(request: Request) {
-  return new Response(null, { status: 204, headers: cors(request) });
-}
-
-export async function POST(request: Request) {
+export async function handleTranscribe(request: Request) {
+    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(request) });
+    if (request.method !== 'POST') return json(request, { error: 'Method not allowed.' }, 405);
     if (!authorize(request)) return json(request, { error: 'Invalid or missing MOTOCRAFT AI access code.' }, 401);
     if (rateLimit(request, 20)) return json(request, { error: 'Too many requests. Wait a minute and try again.' }, 429);
     try {
@@ -25,4 +24,8 @@ export async function POST(request: Request) {
       if (!response.ok) throw new Error(data?.error?.message || `Transcription failed (${response.status}).`);
       return json(request, { text: data.text || '', model: 'whisper-large-v3-turbo' });
     } catch (error) { return json(request, { error: error instanceof Error ? error.message : 'Transcription failed.' }, 502); }
+}
+
+export default function transcribe(request: VercelRequestLike, response: VercelResponseLike) {
+  return runWebHandler(request, response, handleTranscribe);
 }

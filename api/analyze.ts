@@ -1,13 +1,12 @@
 import { analysisRequestSchema, authorize, cors, decodeVin, groqChat, json, parseModelJson, rateLimit } from './_shared';
+import { runWebHandler, type VercelRequestLike, type VercelResponseLike } from '../server/vercel-adapter';
 
 const systemPrompt = `You are MOTOCRAFT's cautious vehicle acquisition analyst. Evaluate only supplied evidence and the NHTSA VIN specification data. Never claim to have queried CARFAX, AutoCheck, NMVTIS, auction history, maintenance networks, live listings, or title databases. Uploaded reports may be summarized but not independently verified. Produce preliminary USD estimates, not quotes. Use conservative ranges, state assumptions, and flag missing evidence. Repair estimates must include parts and labor as broad market ranges. Retail estimates must be based on the supplied facts, condition, mileage, title status and location; explicitly say when market-comparable data is absent. Return valid JSON only with this exact shape:
 {"verdict":"worth_it|negotiate|pass|insufficient_data","confidence":0,"executiveSummary":"","evidenceReviewed":[""],"vehicleIdentity":{"vin":"","year":"","make":"","model":"","trim":"","source":""},"titleAssessment":{"rating":"low_risk|medium_risk|high_risk|unknown","findings":[""]},"maintenanceAssessment":{"rating":"good|mixed|poor|unknown","findings":[""]},"repairEstimate":{"low":0,"high":0,"items":[{"item":"","low":0,"high":0,"urgency":"immediate|soon|monitor"}],"basis":""},"recommendedPurchase":{"max":0,"rationale":""},"projectedRetail":{"low":0,"target":0,"high":0,"basis":""},"otherCostReserve":0,"riskFlags":[""],"documentFindings":[""],"missingInformation":[""],"assumptions":[""],"nextSteps":[""]}}`;
 
-export function OPTIONS(request: Request) {
-  return new Response(null, { status: 204, headers: cors(request) });
-}
-
-export async function POST(request: Request) {
+export async function handleAnalyze(request: Request) {
+    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(request) });
+    if (request.method !== 'POST') return json(request, { error: 'Method not allowed.' }, 405);
     if (!authorize(request)) return json(request, { error: 'Invalid or missing MOTOCRAFT AI access code.' }, 401);
     if (rateLimit(request)) return json(request, { error: 'Too many requests. Wait a minute and try again.' }, 429);
     try {
@@ -31,4 +30,8 @@ export async function POST(request: Request) {
       const message = error instanceof Error ? error.message : 'Analysis failed.';
       return json(request, { error: message }, /configured/.test(message) ? 503 : 502);
     }
+}
+
+export default function analyze(request: VercelRequestLike, response: VercelResponseLike) {
+  return runWebHandler(request, response, handleAnalyze);
 }
