@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": null,
+  "trailingSlash": false,
+  "functions": {
+    "api/health.ts": {
+      "maxDuration": 10
+    },
+    "api/analyze.ts": {
+      "maxDuration": 60
+    },
+    "api/transcribe.ts": {
+      "maxDuration": 60
+    }
+  }
+}
