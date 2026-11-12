@@ -23,10 +23,14 @@ const colors=['#3976ef','#36b89a','#8b6ce5','#f4b44c','#e47f8d','#9ba9bf'];
 function Badge({children}:{children:React.ReactNode}) {const s=String(children);return <span className={`badge ${/Ready|Active|Completed|Paid|Finalized|Delivered|Converted/.test(s)?'green':/repair|progress|Pending|Awaiting|Interested|Draft/.test(s)?'amber':/Sold|Listed|Received|transit|Scheduled|New/.test(s)?'blue':/Reversed|Cancelled|Lost|Inactive/.test(s)?'red':'neutral'}`}><span/>{children||'—'}</span>;}
 function VehicleAvatar({vehicle,small=false}:{vehicle:Row;small?:boolean}){return <div className={`vehicle-avatar ${small?'small-avatar':''} tone-${(+vehicle.year||0)%4}`}><CarFront strokeWidth={1.2}/></div>;}
 const today=()=>new Date().toISOString().slice(0,10);
+const ACTIVE_PAGE_KEY='motocraft-active-page';
+function readStoredActivePage():string{if(typeof window==='undefined')return 'dashboard';try{return window.localStorage.getItem(ACTIVE_PAGE_KEY)||'dashboard';}catch{return 'dashboard';}}
+function storeActivePage(key:string){try{window.localStorage.setItem(ACTIVE_PAGE_KEY,key);}catch{/* ignore storage errors (private browsing, blocked) */}}
 
 export default function App(){
  const [db,setDb]=useState<Database>(initialDatabase);
- const [active,setActive]=useState('dashboard'); const [role,setRole]=useState<Role>('Administrator');
+ const [active,setActiveState]=useState(readStoredActivePage); const [role,setRole]=useState<Role>('Administrator');
+ function setActive(key:string){setActiveState(key);storeActivePage(key);}
  const [dark,setDark]=useState(false); const [mobile,setMobile]=useState(false); const [collapsed,setCollapsed]=useState<string[]>([]);
  const [query,setQuery]=useState(''); const [status,setStatus]=useState('All statuses'); const [global,setGlobal]=useState('');
  const [notificationOpen,setNotificationOpen]=useState(false); const [profileOpen,setProfileOpen]=useState(false); const [quickOpen,setQuickOpen]=useState(false);

@@ -12,6 +12,9 @@
     },
     "api/transcribe.ts": {
       "maxDuration": 60
+    },
+    "api/fetch-listing.ts": {
+      "maxDuration": 20
     }
   }
 }

@@ -1,4 +1,6 @@
 import { timingSafeEqual } from 'node:crypto';
+import { lookup } from 'node:dns/promises';
+import { isIP } from 'node:net';
 import { z } from 'zod';
 
 export const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'https://motocraft-project.github.io,http://127.0.0.1:3000,http://localhost:3000').split(',').map(s => s.trim()).filter(Boolean);
@@ -41,8 +43,9 @@ export const vehicleSchema = z.object({
   vin: z.string().trim().max(17).default(''), year: z.string().trim().max(4).default(''),
   make: z.string().trim().max(80).default(''), model: z.string().trim().max(80).default(''), trim: z.string().trim().max(80).default(''),
   mileage: z.string().trim().max(12).default(''), purchasePrice: z.string().trim().max(20).default(''),
+  targetRetailPrice: z.string().trim().max(20).default(''),
   titleStatus: z.string().trim().max(80).default('Unknown'), location: z.string().trim().max(120).default(''),
-  desiredMargin: z.string().trim().max(20).default('2500'), maintenance: z.string().trim().max(12_000).default(''),
+  maintenance: z.string().trim().max(12_000).default(''),
   history: z.string().trim().max(12_000).default(''), spokenDetails: z.string().trim().max(12_000).default('')
 });
 
@@ -86,4 +89,92 @@ export async function groqChat(payload: unknown) {
 export function parseModelJson(value: string) {
   const clean = value.trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
   return JSON.parse(clean);
+}
+
+function ipv4Blocked(ip: string) {
+  const parts = ip.split('.').map(Number);
+  if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return true;
+  const [a, b] = parts;
+  if (a === 0 || a === 10 || a === 127) return true;
+  if (a === 169 && b === 254) return true;
+  if (a === 172 && b >= 16 && b <= 31) return true;
+  if (a === 192 && b === 168) return true;
+  if (a === 100 && b >= 64 && b <= 127) return true;
+  if (a === 198 && (b === 18 || b === 19)) return true;
+  if (a >= 224) return true;
+  return false;
+}
+
+function ipv6Blocked(ip: string) {
+  const v = ip.toLowerCase();
+  if (v === '::1' || v === '::') return true;
+  if (v.startsWith('fc') || v.startsWith('fd')) return true;
+  if (/^fe[89ab]/.test(v)) return true;
+  if (v.startsWith('::ffff:')) { const embedded = v.split(':').pop() || ''; if (isIP(embedded) === 4) return ipv4Blocked(embedded); }
+  return false;
+}
+
+function isBlockedAddress(ip: string) {
+  const version = isIP(ip);
+  if (version === 4) return ipv4Blocked(ip);
+  if (version === 6) return ipv6Blocked(ip);
+  return true;
+}
+
+async function assertPublicHost(hostname: string) {
+  if (/^(localhost|.*\.local)$/i.test(hostname)) throw new Error('That host is not reachable.');
+  if (isIP(hostname)) { if (isBlockedAddress(hostname)) throw new Error('That host is not reachable.'); return; }
+  const records = await lookup(hostname, { all: true, verbatim: true });
+  if (!records.length || records.some(r => isBlockedAddress(r.address))) throw new Error('That host is not reachable.');
+}
+
+const LISTING_MAX_BYTES = 3_000_000;
+const LISTING_TEXT_LIMIT = 8_000;
+
+export async function fetchListingPage(rawUrl: string) {
+  let url: URL;
+  try { url = new URL(rawUrl); } catch { throw new Error('Enter a valid http or https listing URL.'); }
+  for (let redirects = 0; ; redirects++) {
+    if (!/^https?:$/.test(url.protocol)) throw new Error('Only http and https listing URLs are supported.');
+    await assertPublicHost(url.hostname);
+    const response = await fetch(url, {
+      redirect: 'manual',
+      signal: AbortSignal.timeout(8000),
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; MotocraftListingReader/1.0)', Accept: 'text/html,application/xhtml+xml' }
+    });
+    if ([301, 302, 303, 307, 308].includes(response.status)) {
+      const location = response.headers.get('location');
+      if (!location || redirects >= 3) throw new Error('This listing could not be reached (too many redirects).');
+      url = new URL(location, url);
+      continue;
+    }
+    if (!response.ok) throw new Error(`The listing site returned an error (${response.status}).`);
+    const contentType = response.headers.get('content-type') || '';
+    if (!/text\/html|application\/xhtml/i.test(contentType)) throw new Error('That link did not return a readable web page.');
+    const reader = response.body?.getReader();
+    if (!reader) throw new Error('Could not read the listing content.');
+    let received = 0; const chunks: Uint8Array[] = [];
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      received += value.byteLength;
+      if (received > LISTING_MAX_BYTES) { await reader.cancel(); throw new Error('That page is too large to read.'); }
+      chunks.push(value);
+    }
+    const html = Buffer.concat(chunks.map(c => Buffer.from(c))).toString('utf-8');
+    const title = (html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || '').replace(/\s+/g, ' ').trim().slice(0, 200);
+    const text = html
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<!--[\s\S]*?-->/g, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ').replace(/&middot;/g, '·').replace(/&mdash;/g, '—').replace(/&ndash;/g, '–')
+      .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+      .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, LISTING_TEXT_LIMIT);
+    if (!text) throw new Error('No readable text was found on that page.');
+    return { title: title || url.hostname, text, url: url.toString() };
+  }
 }

@@ -1,4 +1,4 @@
-import { authorize, cors, json, rateLimit } from './_shared';
+import { authorize, cors, json, rateLimit } from './_shared.js';
 
 export async function handleTranscribe(request: Request) {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors(request) });

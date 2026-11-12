@@ -1,0 +1,87 @@
+<title>Jeep Wrangler Listing</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  /* layout: single-column dealer listing card stack, navy brand band at top */
+  :root{
+    --bg:#f4f6f9; --fg:#1b2430; --card:#ffffff; --border:#e1e6ee; --muted:#5b6475;
+    --price:#10213f; --badge-bg:#e8f8f1; --badge-fg:#1f8f63; --panel:#10213f; --panel-fg:#ffffff;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0f1420; --fg:#e7ecf5; --card:#161d2c; --border:#283049; --muted:#9aa6bd;
+      --price:#8fb8ea; --badge-bg:#123828; --badge-fg:#57d99a; --panel:#0b1626; --panel-fg:#e7ecf5;
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0f1420; --fg:#e7ecf5; --card:#161d2c; --border:#283049; --muted:#9aa6bd;
+    --price:#8fb8ea; --badge-bg:#123828; --badge-fg:#57d99a; --panel:#0b1626; --panel-fg:#e7ecf5;
+    color-scheme:dark;
+  }
+  body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:var(--bg);color:var(--fg)}
+  header{background:var(--panel);color:var(--panel-fg);padding-block:18px;padding-left:max(28px,env(safe-area-inset-left,0px));padding-right:max(28px,env(safe-area-inset-right,0px));font-size:20px;font-weight:700}
+  main{max-width:860px;margin:28px auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:26px;margin-bottom:20px}
+  h1{font-size:26px;margin:0 0 6px;text-wrap:balance}
+  .badge{display:inline-block;background:var(--badge-bg);color:var(--badge-fg);font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;margin-bottom:12px}
+  .price{font-size:30px;font-weight:800;color:var(--price);font-variant-numeric:tabular-nums}
+  .meta{color:var(--muted);font-size:14px;margin:4px 0 18px}
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px;min-width:280px}
+  table td{padding:9px 12px 9px 0;border-bottom:1px solid var(--border)}
+  table td:first-child{color:var(--muted);white-space:nowrap}
+  .section-title{font-size:15px;font-weight:700;margin:0 0 12px;text-transform:uppercase;letter-spacing:.4px;color:var(--fg)}
+  p.description{line-height:1.7;font-size:14px;color:var(--fg)}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding-block:20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .gallery{padding:0;overflow:hidden}
+  .hero-shot{width:100%;max-width:100%;display:block;object-fit:cover}
+</style>
+<header>Demo Motors · Dallas, TX</header>
+<main>
+  <div class="card">
+    <span class="badge">Clean title</span>
+    <h1>2023 Jeep Wrangler Rubicon</h1>
+    <div class="meta">Stock #DM-1025 · VIN 1C4HJXFG3PW123456 · Dallas, TX</div>
+    <div class="price">$46,900</div>
+    <div class="meta">12,450 miles</div>
+  </div>
+
+  <div class="card gallery">
+    <img class="hero-shot" src="jeep-wrangler.jpg" alt="2023 Jeep Wrangler Rubicon">
+  </div>
+
+  <div class="card">
+    <h2 class="section-title">Vehicle details</h2>
+    <div class="table-wrap">
+    <table>
+      <tr><td>VIN</td><td>1C4HJXFG3PW123456</td></tr>
+      <tr><td>Year</td><td>2023</td></tr>
+      <tr><td>Make</td><td>Jeep</td></tr>
+      <tr><td>Model</td><td>Wrangler</td></tr>
+      <tr><td>Trim</td><td>Rubicon</td></tr>
+      <tr><td>Mileage</td><td>12,450 miles</td></tr>
+      <tr><td>Exterior color</td><td>Hydro Blue</td></tr>
+      <tr><td>Interior color</td><td>Black leather</td></tr>
+      <tr><td>Body style</td><td>SUV, 4-door</td></tr>
+      <tr><td>Engine</td><td>3.6L V6</td></tr>
+      <tr><td>Transmission</td><td>Automatic</td></tr>
+      <tr><td>Drivetrain</td><td>4x4</td></tr>
+      <tr><td>Fuel type</td><td>Gasoline</td></tr>
+      <tr><td>Title status</td><td>Clean title</td></tr>
+      <tr><td>Location</td><td>Dallas, TX</td></tr>
+      <tr><td>Price</td><td>$46,900</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="section-title">Condition and history</h2>
+    <p class="description">No accidents reported. Clean Carfax, single owner. Minor rock-rail scuff on the driver side, cosmetic only. Tires at 80% tread. All manufacturer recalls completed.</p>
+  </div>
+
+  <div class="card">
+    <h2 class="section-title">Recent service</h2>
+    <p class="description">2026-10-24: Pre-sale inspection, oil change, and brake pad replacement completed by an authorized service center.</p>
+  </div>
+</main>
+<footer>This is a fictional demo listing used for testing MOTOCRAFT's listing import feature. Not a real vehicle for sale.</footer>

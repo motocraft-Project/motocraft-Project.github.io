@@ -1,5 +1,6 @@
 import { createServer, type IncomingMessage } from 'node:http';
 import { handleAnalyze } from '../api/analyze';
+import { handleFetchListing } from '../api/fetch-listing';
 import { handleHealth } from '../api/health';
 import { handleTranscribe } from '../api/transcribe';
 
@@ -11,6 +12,7 @@ type RouteHandler = (request: Request) => Response | Promise<Response>;
 
 const routes = new Map<string, RouteHandler>([
   ['/api/analyze', handleAnalyze],
+  ['/api/fetch-listing', handleFetchListing],
   ['/api/health', handleHealth],
   ['/api/transcribe', handleTranscribe],
 ]);

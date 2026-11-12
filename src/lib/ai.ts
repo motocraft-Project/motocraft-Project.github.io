@@ -1,7 +1,7 @@
 export type AIFileEvidence = {
   id: string;
   name: string;
-  kind: 'image' | 'pdf' | 'document';
+  kind: 'image' | 'pdf' | 'document' | 'link';
   size: number;
   summary: string;
   text?: string;
@@ -16,9 +16,9 @@ export type VehicleAnalysisInput = {
   trim: string;
   mileage: string;
   purchasePrice: string;
+  targetRetailPrice: string;
   titleStatus: string;
   location: string;
-  desiredMargin: string;
   maintenance: string;
   history: string;
   spokenDetails: string;
@@ -51,8 +51,8 @@ export type VehicleAnalysisResult = {
 };
 
 export const emptyVehicleAnalysisInput: VehicleAnalysisInput = {
-  vin: '', year: '', make: '', model: '', trim: '', mileage: '', purchasePrice: '',
-  titleStatus: 'Unknown', location: '', desiredMargin: '2500', maintenance: '', history: '', spokenDetails: ''
+  vin: '', year: '', make: '', model: '', trim: '', mileage: '', purchasePrice: '', targetRetailPrice: '',
+  titleStatus: 'Unknown', location: '', maintenance: '', history: '', spokenDetails: ''
 };
 
 export const verdictLabel: Record<VehicleAnalysisResult['verdict'], string> = {
